@@ -1,0 +1,12 @@
+groups:
+- name: Docker ps exporter rules
+  rules:
+
+  - alert: "Service down"
+    expr: docker_ps_container_up == 0
+    for: 1m
+    labels:
+      severity: error
+    annotations:
+      summary: "Target: {{ $labels.instance }}"
+      description: "{{ $labels.container_name }} down"
