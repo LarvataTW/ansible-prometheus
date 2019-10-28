@@ -1,16 +1,43 @@
 ---
-- name: Add prometheus configs
-  copy:
-    src: "{{ playbook_dir }}/../inventories/{{ deploy_environment }}/files/prometheus"
-    dest: /volumns/
-    directory_mode: yes
-    owner: root
-    group: root
 
-- name: Add alertmanager configs
-  copy:
-    src: "{{ playbook_dir }}/../inventories/{{ deploy_environment }}/files/alertmanager"
-    dest: /volumns/
-    directory_mode: yes
+- name: Make sure directories exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
     owner: root
     group: root
+    mode: '0755'
+  with_items:
+    - /volumes/alertmanager
+    - /volumns/prometheus
+    - /volumns/prometheus/alerts
+
+- name: Add alertmanager config
+  template:
+    src: templates/alertmanager/config.yml.j2
+    dest: /volumns/alertmanager/config.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add prometheus config
+  template:
+    src: templates/prometheus/prometheus.yml.j2
+    dest: /volumns/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Add prometheus alerts
+  template:
+    src: "templates/prometheus/alerts/{{ item }}.j2"
+    dest: "/volumns/prometheus/alerts/{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - cadvisor_rules.yml
+    - docker_ps_exporter_rules.yml
+    - node_exporter_rules.yml
+    - prometheus_rules.yml
