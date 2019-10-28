@@ -1,0 +1,8 @@
+---
+- include: create_networks.yml
+
+- include: create_agent_containers.yml
+  tags: agent
+
+- include: server.yml
+  tags: server

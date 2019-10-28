@@ -1,0 +1,18 @@
+---
+  - name: check if prometheus_data exists
+    command: docker volume inspect prometheus_data
+    register: prometheus_data_exists
+    failed_when: false
+
+  - name: create prometheus_data
+    command: docker volume create --name prometheus_data
+    when: prometheus_data_exists|failed
+
+  - name: check if grafana_data exists
+    command: docker volume inspect grafana_data
+    register: grafana_data_exists
+    failed_when: false
+
+  - name: create grafana_data
+    command: docker volume create --name grafana_data
+    when: grafana_data_exists|failed

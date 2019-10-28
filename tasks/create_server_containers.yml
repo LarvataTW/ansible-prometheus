@@ -1,0 +1,116 @@
+---
+- name: Create docker-ps-exporter
+  docker_container:
+    name: docker-ps-exporter
+    image: "{{ registry_server | default('docker.io') }}/happiness9721/docker-ps-exporter"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    state: started
+    recreate: yes
+    restart_policy: always
+    exposed_ports:
+      - "{{ internal_port_docker_ps_exporter }}"
+    ports:
+      - "{{ exposed_port_docker_ps_exporter ~ ':' ~ internal_port_docker_ps_exporter }}"
+    networks:
+      - name: monitor_network
+
+- name: Create cadvisor
+  docker_container:
+    name: cadvisor
+    image: "{{ registry_server | default('docker.io') }}/google/cadvisor"
+    command:
+      - '--enable_load_reader=true'
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    state: started
+    recreate: yes
+    restart_policy: always
+    exposed_ports:
+      - "{{ internal_port_cadvisor }}"
+    ports:
+      - "{{ exposed_port_cadvisor ~ ':' ~ internal_port_cadvisor }}"
+    networks:
+      - name: monitor_network
+
+- name: Create node-exporter
+  docker_container:
+    name: node-exporter
+    image: "{{ registry_server | default('docker.io') }}/prom/node-exporter"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^(/rootfs|/host|)/(sys|proc|dev|host|etc)($$|/)"'
+      - '--collector.filesystem.ignored-fs-types="^(sys|proc|auto|cgroup|devpts|ns|au|fuse\.lxc|mqueue)(fs|)$$"'
+    state: started
+    recreate: yes
+    restart_policy: always
+    exposed_ports:
+      - "{{ internal_port_node_exporter }}"
+    ports:
+      - "{{ exposed_port_node_exporter ~ ':' ~ internal_port_node_exporter }}"
+    networks:
+      - name: monitor_network
+
+- name: Create alertmanager
+  docker_container:
+    name: alertmanager
+    image: "{{ registry_server | default('docker.io') }}/prom/alertmanager"
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+      - "{{ '--web.external-url=http://' ~ monitoring_server_alertmanager_ip  ~ ':' ~ exposed_port_alertmanager ~ '/' }}"
+    state: started
+    recreate: yes
+    restart_policy: always
+    ports:
+      - "{{ exposed_port_alertmanager ~ ':' ~ internal_port_alertmanager }}"
+    volumes:
+      - /volumns/alertmanager/:/etc/alertmanager/
+    networks:
+      - name: monitor_network
+
+- name: Create prometheus
+  docker_container:
+    name: prometheus
+    image: "{{ registry_server | default('docker.io') }}/prom/prometheus"
+    volumes:
+      - /volumns/prometheus:/etc/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--query.lookback-delta=1m'
+      - "{{ '--web.external-url=http://' ~ monitoring_server_prometheus_ip  ~ ':' ~ exposed_port_prometheus ~ '/' }}"
+    state: started
+    recreate: yes
+    restart_policy: always
+    exposed_ports:
+      - "{{ internal_port_prometheus }}"
+    ports:
+      - "{{ exposed_port_prometheus ~ ':' ~ internal_port_prometheus }}"
+    networks:
+      - name: monitor_network
+
+- name: Create grafana
+  docker_container:
+    name: grafana
+    image: "{{ registry_server | default('docker.io') }}/grafana/grafana"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    state: started
+    recreate: yes
+    restart_policy: always
+    ports:
+      - "{{ exposed_port_grafana ~ ':' ~ internal_port_grafana }}"
+    env:
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_passowrd }}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    networks:
+      - name: monitor_network

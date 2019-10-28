@@ -1,0 +1,5 @@
+---
+- name: Create monitor network
+  docker_network:
+    name: monitor_network
+    appends: yes

@@ -1,0 +1,9 @@
+---
+- name: Creates directory
+  file:
+    path: /volumns/common
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+    recurse: yes
