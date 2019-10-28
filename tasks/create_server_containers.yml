@@ -13,7 +13,7 @@
     ports:
       - "{{ exposed_port_alertmanager ~ ':' ~ internal_port_alertmanager }}"
     volumes:
-      - /volumns/alertmanager/:/etc/alertmanager/
+      - /volumes/alertmanager/:/etc/alertmanager/
     networks:
       - name: monitor_network
 
@@ -22,7 +22,7 @@
     name: prometheus
     image: "{{ registry_server | default('docker.io') }}/prom/prometheus"
     volumes:
-      - /volumns/prometheus:/etc/prometheus
+      - /volumes/prometheus:/etc/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--query.lookback-delta=1m'

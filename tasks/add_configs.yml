@@ -10,13 +10,13 @@
     mode: '0755'
   with_items:
     - /volumes/alertmanager
-    - /volumns/prometheus
-    - /volumns/prometheus/alerts
+    - /volumes/prometheus
+    - /volumes/prometheus/alerts
 
 - name: Add alertmanager config
   template:
     src: templates/alertmanager/config.yml.j2
-    dest: /volumns/alertmanager/config.yml
+    dest: /volumes/alertmanager/config.yml
     owner: root
     group: root
     mode: '0644'
@@ -24,7 +24,7 @@
 - name: Add prometheus config
   template:
     src: templates/prometheus/prometheus.yml.j2
-    dest: /volumns/prometheus/prometheus.yml
+    dest: /volumes/prometheus/prometheus.yml
     owner: root
     group: root
     mode: '0644'
@@ -32,7 +32,7 @@
 - name: Add prometheus alerts
   template:
     src: "templates/prometheus/alerts/{{ item }}.j2"
-    dest: "/volumns/prometheus/alerts/{{ item }}"
+    dest: "/volumes/prometheus/alerts/{{ item }}"
     owner: root
     group: root
     mode: '0644'

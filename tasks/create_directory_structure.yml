@@ -1,7 +1,7 @@
 ---
 - name: Creates directory
   file:
-    path: /volumns/common
+    path: /volumes/common
     state: directory
     owner: root
     group: root

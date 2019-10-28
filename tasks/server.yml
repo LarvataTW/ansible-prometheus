@@ -2,5 +2,5 @@
 
 - include: create_directory_structure.yml
 - include: add_configs.yml
-- include: create_volumns.yml
+- include: create_volumes.yml
 - include: create_server_containers.yml
