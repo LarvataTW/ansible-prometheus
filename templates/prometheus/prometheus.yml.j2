@@ -31,17 +31,23 @@ scrape_configs:
     static_configs:
       - targets:
         - docker-ps-exporter:9491
-        - 1.2.3.4:9491
+        {% for host in vars['play_hosts'] %}
+        - "{{ hostvars[host].ansible_default_ipv4.address }}:9491"
+        {% endfor %}
 
   - job_name: 'cadvisor'
     static_configs:
       - targets:
         - cadvisor:8080
-        - 1.2.3.4:38080
+        {% for host in vars['play_hosts'] %}
+        - "{{ hostvars[host].ansible_default_ipv4.address }}:9491"
+        {% endfor %}
 
   - job_name: 'node'
     scrape_interval: 8s
     static_configs:
       - targets:
         - node-exporter:9100
-        - 1.2.3.4:39100
+        {% for host in vars['play_hosts'] %}
+        - "{{ hostvars[host].ansible_default_ipv4.address }}:9491"
+        {% endfor %}

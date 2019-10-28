@@ -1,0 +1,32 @@
+---
+
+# Server
+
+## Grafana
+grafana_admin_passowrd: "secret"
+
+## Monitoring server
+monitoring_server_prometheus_ip: 1.2.3.4
+monitoring_server_alertmanager_ip: 1.2.3.4
+
+## Internal ports
+internal_port_alertmanager: 9093
+internal_port_prometheus: 9090
+internal_port_grafana: 3000
+
+## Exposed ports
+exposed_port_alertmanager: 49093
+exposed_port_prometheus: 49090
+exposed_port_grafana: 43000
+
+# Agent
+
+## Internal ports
+internal_port_docker_ps_exporter: 9491
+internal_port_cadvisor: 8080
+internal_port_node_exporter: 9100
+
+## Exposed ports
+exposed_port_docker_ps_exporter: 49491
+exposed_port_cadvisor: 48080
+exposed_port_node_exporter: 49100
