@@ -2,6 +2,13 @@
 
 # Server
 
+## SMTP
+mail_receiver: example@gmail.com
+mail_sender: example@gmail.com
+mail_smtp: 'smtp.gmail.com:587'
+mail_username: example@gmail.com
+mail_password: 'secret'
+
 ## Grafana
 grafana_admin_passowrd: "secret"
 
