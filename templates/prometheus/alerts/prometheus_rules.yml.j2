@@ -1,3 +1,5 @@
+{% raw %}
+
 groups:
 - name: Prometheus rules
   rules:
@@ -28,3 +30,5 @@ groups:
     annotations:
       summary: "Exporter down (instance {{ $labels.instance }})"
       description: "Prometheus exporter down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+{% endraw %}

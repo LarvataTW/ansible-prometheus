@@ -1,3 +1,5 @@
+{% raw %}
+
 groups:
 - name: Node exporter rules
   rules:
@@ -118,3 +120,5 @@ groups:
     annotations:
       summary: "SystemD service failed (instance {{ $labels.instance }})"
       description: "Service {{ $labels.name }} failed\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+
+{% endraw %}
