@@ -33,7 +33,7 @@ scrape_configs:
       - targets:
         - docker-ps-exporter:9491
         {%- for host in vars['play_hosts'] %}
-        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_docker_ps_exporter }}
+        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_docker_ps_exporter }}{{ '\n' }}
         {%- endfor %}
 
   - job_name: 'cadvisor'
@@ -41,7 +41,7 @@ scrape_configs:
       - targets:
         - cadvisor:8080
         {%- for host in vars['play_hosts'] %}
-        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_cadvisor }}
+        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_cadvisor }}{{ '\n' }}
         {%- endfor %}
 
   - job_name: 'node'
@@ -50,5 +50,5 @@ scrape_configs:
       - targets:
         - node-exporter:9100
         {%- for host in vars['play_hosts'] %}
-        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_node_exporter }}
+        - {{ hostvars[host].ansible_default_ipv4.address }}:{{ exposed_port_node_exporter }}{{ '\n' }}
         {%- endfor %}
