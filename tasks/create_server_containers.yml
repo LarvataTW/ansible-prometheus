@@ -16,6 +16,8 @@
       - /volumes/alertmanager/:/etc/alertmanager/
     networks:
       - name: monitor_network
+  tags:
+    - alertmanager
 
 - name: Create prometheus
   docker_container:
@@ -36,6 +38,8 @@
       - "{{ exposed_port_prometheus ~ ':' ~ internal_port_prometheus }}"
     networks:
       - name: monitor_network
+  tags:
+    - prometheus
 
 - name: Create grafana
   docker_container:
@@ -53,3 +57,5 @@
       GF_USERS_ALLOW_SIGN_UP: "false"
     networks:
       - name: monitor_network
+  tags:
+    - grafana
