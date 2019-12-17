@@ -6,7 +6,7 @@
 
   - name: create prometheus_data
     command: docker volume create --name prometheus_data
-    when: prometheus_data_exists|failed
+    when: prometheus_data_exists is failed
 
   - name: check if grafana_data exists
     command: docker volume inspect grafana_data
@@ -15,4 +15,4 @@
 
   - name: create grafana_data
     command: docker volume create --name grafana_data
-    when: grafana_data_exists|failed
+    when: grafana_data_exists is failed
