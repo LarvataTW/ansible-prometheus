@@ -1,15 +1,18 @@
+global:
+  smtp_smarthost: "{{ mail_smtp }}:{{ mail_port }}"
+  smtp_from: "{{ mail_sender }}"
+  smtp_auth_identity: "{{ mail_username }}"
+  smtp_auth_username: "{{ mail_username }}"
+  smtp_auth_password: "{{ mail_password }}"
+
 route:
   group_by:
    - alertname
-  # Send all notifications to me.
-  receiver: email-me
+  receiver: email-notify
 
 receivers:
-- name: email-me
+- name: email-notify
   email_configs:
-  - to: "{{ mail_receiver }}"
-    from: "{{ mail_sender }}"
-    smarthost: "{{ mail_smtp }}"
-    auth_username: "{{ mail_username }}"
-    auth_identity: "{{ mail_username }}"
-    auth_password: "{{ mail_password }}"
+  {% for receiver in mail_receivers %}{{ '\n' }}
+  - to: "{{ receiver }}"
+  {% endfor %}
