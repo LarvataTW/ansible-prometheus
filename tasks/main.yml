@@ -6,4 +6,4 @@
 
 - include: server.yml
   tags: server
-  when: inventory_hostname in groups.prometheus_servers
+  when: inventory_hostname in groups.prometheus_server
