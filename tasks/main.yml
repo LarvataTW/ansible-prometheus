@@ -3,8 +3,7 @@
 
 - include: create_node_containers.yml
   tags: node
-  when: prometheus_role == 'node'
 
 - include: server.yml
   tags: server
-  when: prometheus_role == 'server'
+  when: inventory_hostname in groups.prometheus_servers
