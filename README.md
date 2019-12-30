@@ -1,7 +1,6 @@
-# Prometheus Agent or Prometheus Server & Grafana
+# Prometheus Node or Prometheus Server & Grafana
 
-部署 Agent：
-ansible-playbook with `--skip-tags server`
-
-部署 Server & Grafana：
-ansible-playbook with `--skip-tags agent`
+1. 建立 prometheus inventory group
+2. 在 prometheus host 設定參數 prometheus_role=server
+3. 在 prometheus node 設定參數 prometheus_role=node
+4. ansible play

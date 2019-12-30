@@ -1,8 +1,10 @@
 ---
 - include: create_networks.yml
 
-- include: create_agent_containers.yml
-  tags: agent
+- include: create_node_containers.yml
+  tags: node
+  when: prometheus_role == 'node'
 
 - include: server.yml
   tags: server
+  when: prometheus_role == 'server'

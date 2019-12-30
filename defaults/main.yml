@@ -28,7 +28,7 @@ exposed_port_alertmanager: 49093
 exposed_port_prometheus: 49090
 exposed_port_grafana: 43000
 
-# Agent
+# Node
 
 ## Internal ports
 internal_port_docker_ps_exporter: 9491
